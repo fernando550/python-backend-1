@@ -17,7 +17,9 @@ class UserProfileManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
 
-    def create_super_user(self, email, name, password):
+        return user
+
+    def create_superuser(self, email, name, password):
         "create and save a new superuser"
         user = self.create_user(email,name,password)
 
@@ -26,6 +28,7 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
+
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     "database model for users"
@@ -39,17 +42,14 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
-
     def get_full_name(self):
         "retrieve full name"
         return self.name
 
-    
     def get_short_name(self):
         "retrieve short name"
         return self.name
 
-    
     def __str__(self):
         "return string representation of user"
         return self.email
